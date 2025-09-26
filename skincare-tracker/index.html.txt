@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Skincare Tracker</title>
+
+  <!-- iOS/PWA support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Skincare Tracker">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+
+  <style>
+    /* Your existing CSS */
+    @font-face {
+      font-family: 'LucySaidOk';
+      src: url('Lucy Said Ok Personal Use.ttf') format('truetype');
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      color: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      font-family: 'LucySaidOk', cursive;
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 2rem 0;
+      width: 100%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+
+    .tab {
+      padding: 0.5rem 2rem;
+      cursor: pointer;
+      border-radius: 25px;
+      margin: 0 0.5rem;
+      border: 2px solid #000;
+      font-weight: bold;
+      transition: all 0.3s;
+      background-color: #ffffff;
+      color: #000;
+    }
+
+    .tab.active {
+      background-color: #000;
+      color: #fff;
+    }
+
+    section {
+      max-width: 900px;
+      width: 95%;
+      margin: 1rem auto;
+      padding: 1rem;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    h2 {
+      font-family: 'LucySaidOk', cursive;
+      font-weight: bold;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #000;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px solid #000;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #000;
+      border-right: 1px solid #000;
+    }
+
+    th:last-child, td:last-child {
+      border-right: none;
+    }
+
+    th {
+      background-color: #e6e6e6;
+      font-weight: bold;
+      border-bottom: 2px solid #000;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f2f2f2;
+    }
+
+    .heart {
+      cursor: pointer;
+      font-size: 1.2rem;
+      user-select: none;
+      color: #000;
+    }
+
+    .heart.checked {
+      color: #000;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .reset-btn {
+      margin: 1rem 0 2rem 0;
+      padding: 0.6rem 1.5rem;
+      border-radius: 25px;
+      border: 2px solid #000;
+      background-color: #ffffff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .reset-btn:hover {
+      background-color: #f2f2f2;
+    }
+
+    .current-step td:not(.day-name) {
+      background: linear-gradient(90deg, #e9e0ff, #f4ebff);
+      transition: all 0.3s;
+    }
+
+    .day-name {
+      font-family: 'LucySaidOk', cursive;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>My Skincare Tracker</header>
+  <div class="tabs">
+    <div class="tab day active" onclick="showTab('day')">Day Routine</div>
+    <div class="tab night" onclick="showTab('night')">Night Routine</div>
+  </div>
+
+  <!-- Day Routine -->
+  <section id="day" class="day active">
+    <h2>Day Routine</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Product</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1. HOCl</td>
+          <td>HOCl Spray</td>
+          <td><span class="heart" onclick="toggleHeart(this)">♡</span></td>
+        </tr>
+        <tr>
+          <td>2. Toner</td>
+          <td>Acwell Licorice Toner</td>
+          <td><span class="heart" onclick="toggleHeart(this)">♡</span></td>
+        </tr>
+        <tr>
+          <td>3. Active</td>
+          <td>Finacea</td>
+          <td><span class="heart" onclick="toggleHeart(this)">♡</span></td>
+        </tr>
+        <tr>
+          <td>4. Serum</td>
+          <td>- Cos De BAHA Serum <br>- iUNIK Beta Glucan Serum <br>- Kracie Hadabisei Brightening Serum</td>
+          <td><span class="heart" onclick="toggleHeart(this)">♡</span></td>
+        </tr>
+        <tr>
+          <td>5. Moisturizer</td>
+          <td>iUNIK Beta Glucan Barrier Cream</td>
+          <td><span class="heart" onclick="toggleHeart(this)">♡</span></td>
+        </tr>
+        <tr>
+          <td>6. Sunscreen</td>
+          <td>Atomy Beige SPF50+ PA+++</td>
+          <td><span class="heart" onclick="toggleHeart(this)">♡</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Night Routine 7-Day -->
+  <section id="night" class="night">
+    <h2>Night Routine (7-Day Rotation)</h2>
+    <table id="nightTable">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Step</th>
+          <th>Product</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <button class="reset-btn" onclick="resetHearts()">Reset Tracker</button>
+
+  <script>
+    // Tab switching
+    function showTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.querySelector('.tab.' + tab).classList.add('active');
+      document.getElementById(tab).classList.add('active');
+    }
+
+    // Toggle heart and cross out row
+    function toggleHeart(el) {
+      el.classList.toggle('checked');
+      const tr = el.closest('tr');
+      if (el.classList.contains('checked')) {
+        el.textContent = '♥';
+        tr.classList.add('completed');
+      } else {
+        el.textContent = '♡';
+        tr.classList.remove('completed');
+      }
+    }
+
+    // Reset all hearts
+    function resetHearts() {
+      document.querySelectorAll('.heart').forEach(el => {
+        el.classList.remove('checked');
+        el.textContent = '♡';
+        el.closest('tr').classList.remove('completed');
+      });
+    }
+
+    // Night routine data
+    const nightData = [
+      { day: 'Monday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','PanOxyl 10%','Sulphur Mask','Acwell Licorice Toner','Adapalene','Aestura Atobarrier 365 Cream','Zinc Paste'] },
+      { day: 'Tuesday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','Vanicream','Sake Mask','Acwell Licorice Toner','Finacea','Aestura Atobarrier 365 Cream','Zinc Paste'] },
+      { day: 'Wednesday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','PanOxyl 10%','None','Acwell Licorice Toner','Adapalene','Aestura Atobarrier 365 Cream','Zinc Paste'] },
+      { day: 'Thursday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','Vanicream','Sake Mask','Acwell Licorice Toner','Finacea','Aestura Atobarrier 365 Cream','Zinc Paste'] },
+      { day: 'Friday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','Vanicream','Clay or Sulphur Mask','Acwell Licorice Toner','Adapalene','Aestura Atobarrier 365 Cream','Zinc Paste'] },
+      { day: 'Saturday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','PanOxyl 10%','None','Acwell Licorice Toner','Finacea','Aestura Atobarrier 365 Cream','Zinc Paste'] },
+      { day: 'Sunday', steps: ['Oil Cleanser','Water Cleanser','Treatment','Toner','Active','Moisturizer','Spot Treatment'], products: ['iUNIK Calendula Oil Cleanser','Vanicream','Sake Mask','Acwell Licorice Toner','Finacea','Aestura Atobarrier 365 Cream','Zinc Paste'] }
+    ];
+
+    const tbody = document.querySelector('#nightTable tbody');
+    const today = new Date().getDay(); // 0=Sun,1=Mon,...6=Sat
+    const dayIndex = today === 0 ? 6 : today - 1;
+
+    nightData.forEach((dayObj, index) => {
+      dayObj.steps.forEach((step, i) => {
+        const tr = document.createElement('tr');
+        if (i === 0) {
+          const tdDay = document.createElement('td');
+          tdDay.textContent = dayObj.day;
+          tdDay.classList.add('day-name');
+          tdDay.rowSpan = dayObj.steps.length;
+          tr.appendChild(tdDay);
+        }
+        const tdStep = document.createElement('td');
+        tdStep.textContent = step;
+        tr.appendChild(tdStep);
+        const tdProduct = document.createElement('td');
+        tdProduct.textContent = dayObj.products[i];
+        tr.appendChild(tdProduct);
+        const tdHeart = document.createElement('td');
+        const heart = document.createElement('span');
+        heart.classList.add('heart');
+        heart.textContent = '♡';
+        heart.onclick = () => toggleHeart(heart);
+        tdHeart.appendChild(heart);
+        tr.appendChild(tdHeart);
+        if (index === dayIndex && i % 2 === 0) {
+          tr.classList.add('current-step');
+        }
+        tbody.appendChild(tr);
+      });
+    });
+
+    window.onload = function() {
+      const currentStep = document.querySelector('.current-step');
+      if (currentStep) currentStep.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Register service worker for offline use
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js")
+          .then(reg => console.log("✅ Service Worker registered:", reg))
+          .catch(err => console.log("❌ Service Worker failed:", err));
+      });
+    }
+  </script>
+</body>
+</html>
